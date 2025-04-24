@@ -1,0 +1,14 @@
+<resources>
+    <string name="passwords_dont_match">Пароли не совпадают</string>
+    <string name="simple_password">Простой пароль</string>
+    <string name="email_incorrect">Некорректный email</string>
+    <string name="incorrect_credentials">Неверные данные</string>
+
+    <string name="create_account">Создать аккаунт</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="password_confirmation">Подтвердите пароль</string>
+    <string name="already_registered">Уже зарегистрированы?</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+</resources>

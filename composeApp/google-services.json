@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "817335324703",
+    "project_id": "paylance-769d4",
+    "storage_bucket": "paylance-769d4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817335324703:android:8417746bb57fcf0a0d052a",
+        "android_client_info": {
+          "package_name": "stepan.gorokhov.paylance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbV_rhp4HZuBchiwkClJhHvtM7dwnfpVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
