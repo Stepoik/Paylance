@@ -18,6 +18,10 @@ object Versions {
             const val version = "1.9.0"
         }
 
+        object Datetime {
+            const val version = "0.6.1"
+        }
+
         object Serialization {
             const val version = Kotlin.version
         }

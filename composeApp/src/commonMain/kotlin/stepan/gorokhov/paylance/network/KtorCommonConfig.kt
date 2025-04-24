@@ -6,6 +6,7 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import stepan.gorokhov.paylance.network.serializers.paylanceSerializersModule
 
 internal object KtorConfiguration {
     const val connectTimeoutMillis = 15000L
@@ -15,6 +16,8 @@ internal object KtorConfiguration {
 internal val KtorJson = Json {
     isLenient = true
     ignoreUnknownKeys = true
+
+    serializersModule = paylanceSerializersModule
 }
 
 fun <T : HttpClientEngineConfig> HttpClientConfig<T>.commonConfig() {

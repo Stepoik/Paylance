@@ -7,6 +7,7 @@ plugins {
     id(Plugins.Compose.multiplatform)
     id(Plugins.Compose.compiler)
     id(Plugins.Google.gms)
+    id(Plugins.Kotlin.serialization)
 }
 
 kotlin {
@@ -54,6 +55,8 @@ kotlin {
             implementation(Dependencies.Ktor.serialization)
             implementation(Dependencies.Ktor.contentNegotiation)
             implementation(Dependencies.Ktor.clientCore)
+
+            implementation(Dependencies.Kotlin.datetime)
 
             implementation(Dependencies.Firebase.auth)
 

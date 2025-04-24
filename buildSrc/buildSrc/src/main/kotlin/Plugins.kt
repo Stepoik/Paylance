@@ -6,6 +6,7 @@ object Plugins {
 
     object Kotlin {
         const val multiplatform = "org.jetbrains.kotlin.multiplatform"
+        const val serialization = "org.jetbrains.kotlin.plugin.serialization"
     }
 
     object Compose {

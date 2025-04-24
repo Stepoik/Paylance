@@ -12,6 +12,7 @@ object Dependencies {
 
         const val coroutines =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.Coroutines.version}"
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.Kotlin.Datetime.version}"
 
         object Serialization {
             const val gradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:${Versions.Kotlin.Serialization.version}"
