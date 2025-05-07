@@ -48,6 +48,7 @@ kotlin {
             // Compose
             implementation(Dependencies.Compose.navigation)
             implementation(Dependencies.Compose.viewModel)
+            implementation(Dependencies.Compose.immutableCollections)
             // Koin
             implementation(Dependencies.Koin.viewModel)
             implementation(Dependencies.Koin.koinCompose)
@@ -62,6 +63,9 @@ kotlin {
 
             implementation(projects.coreUi)
             implementation(projects.uikit)
+            // Coil
+            implementation(Dependencies.Coil.compose)
+            implementation(Dependencies.Coil.ktor)
         }
 
         iosMain.dependencies {

@@ -5,7 +5,10 @@ import stepan.gorokhov.paylance.features.home.HomeRoute
 
 private val BASE_ROUTE = HomeRoute.Tasks.route
 
-sealed class TasksRoute(override val route: String) : BaseRoute {
+sealed class TasksRoute(
+    override val route: String,
+    override val navRoute: String = route
+) : BaseRoute {
     data object Main : TasksRoute("$BASE_ROUTE/main")
-    data object Details : TasksRoute("$BASE_ROUTE/details")
+    data object Details : TasksRoute("$BASE_ROUTE/details/{id}", navRoute = "$BASE_ROUTE/details")
 }

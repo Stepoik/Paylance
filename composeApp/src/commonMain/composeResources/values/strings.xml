@@ -11,4 +11,21 @@
     <string name="already_registered">Уже зарегистрированы?</string>
     <string name="sign_in">Войти</string>
     <string name="sign_up">Зарегистрироваться</string>
+    <string name="orders">Заказы</string>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d час назад</item>
+        <item quantity="two">%1$d часа назад</item>
+        <item quantity="few">%1$d часа назад</item>
+        <item quantity="other">%1$d часов назад</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%1$d день назад</item>
+        <item quantity="two">%1$d дня назад</item>
+        <item quantity="few">%1$d дня назад</item>
+        <item quantity="other">%1$d дней назад</item>
+    </plurals>
+    <string name="more_than_month">Больше месяца</string>
+    <string name="less_than_hour">Меньше часа</string>
 </resources>

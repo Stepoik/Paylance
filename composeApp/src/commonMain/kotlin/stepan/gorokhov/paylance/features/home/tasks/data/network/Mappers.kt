@@ -4,7 +4,6 @@ import kotlinx.datetime.LocalDateTime
 import stepan.gorokhov.paylance.core.time.now
 import stepan.gorokhov.paylance.features.home.tasks.data.network.models.AuthorDto
 import stepan.gorokhov.paylance.features.home.tasks.data.network.models.CreateTaskRequest
-import stepan.gorokhov.paylance.features.home.tasks.data.network.models.GetTasksResponse
 import stepan.gorokhov.paylance.features.home.tasks.data.network.models.TaskDto
 import stepan.gorokhov.paylance.features.home.tasks.domain.models.Author
 import stepan.gorokhov.paylance.features.home.tasks.domain.models.Task
@@ -14,7 +13,8 @@ fun TaskDto.toDomain(): Task {
         id = id,
         title = title,
         description = description,
-        author = author.toDomain()
+        author = author.toDomain(),
+        createdAt = createdAt
     )
 }
 
