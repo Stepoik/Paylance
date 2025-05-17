@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import stepan.gorokhov.paylance.features.auth.ui.AuthRoute
 
 internal fun NavGraphBuilder.signUp(navController: NavController) {
-    composable(AuthRoute.SignUp.route) {
+    composable<AuthRoute.SignUp> {
         SignUpScreen(navController)
     }
 }

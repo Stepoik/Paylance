@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import stepan.gorokhov.paylance.features.ApplicationRoute
 
 fun NavGraphBuilder.splash(navController: NavController) {
-    composable(ApplicationRoute.Splash.route) {
+    composable<ApplicationRoute.Splash> {
         SplashScreen(navController)
     }
 }

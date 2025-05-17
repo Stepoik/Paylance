@@ -8,7 +8,7 @@ import stepan.gorokhov.paylance.features.auth.ui.signin.signIn
 import stepan.gorokhov.paylance.features.auth.ui.signup.signUp
 
 fun NavGraphBuilder.auth(navController: NavController) {
-    navigation(route = ApplicationRoute.Auth.route, startDestination = AuthRoute.SignUp.route) {
+    navigation<ApplicationRoute.Auth>(startDestination = AuthRoute.SignUp) {
         signIn(navController)
         signUp(navController)
     }

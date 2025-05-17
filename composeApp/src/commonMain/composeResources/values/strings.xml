@@ -28,4 +28,15 @@
     </plurals>
     <string name="more_than_month">Больше месяца</string>
     <string name="less_than_hour">Меньше часа</string>
+
+    <string name="client">Заказчик</string>
+    <string name="freelancer">Фрилансер</string>
+    <string name="create_project_agitation">Здесь пока пусто, но вы можете создать новые задачи</string>
+    <string name="create_project">Создать задачу</string>
+
+    <string name="creating_project">Создание задачи</string>
+    <string name="title">Название</string>
+    <string name="description">Описание</string>
+    <string name="budget_rubles">Бюджет в рублях</string>
+    <string name="create">Создать</string>
 </resources>

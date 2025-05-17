@@ -15,11 +15,11 @@ fun SplashScreen(navController: NavController) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 is SplashEffect.NavigateAuth -> {
-                    navController.navigate(ApplicationRoute.Auth.route) { popUpGraph() }
+                    navController.navigate(ApplicationRoute.Auth) { popUpGraph() }
                 }
 
                 is SplashEffect.NavigateTests -> {
-                    navController.navigate(ApplicationRoute.Home.route) { popUpGraph() }
+                    navController.navigate(ApplicationRoute.Home) { popUpGraph() }
                 }
             }
         }

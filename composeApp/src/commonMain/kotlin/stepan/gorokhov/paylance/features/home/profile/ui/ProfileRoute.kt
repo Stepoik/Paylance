@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import stepan.gorokhov.paylance.features.home.HomeRoute
 
 fun NavGraphBuilder.profile(navController: NavController) {
-    composable(HomeRoute.Profile.route) {
+    composable<HomeRoute.Profile> {
 
     }
 }

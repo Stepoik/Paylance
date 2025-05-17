@@ -1,11 +1,31 @@
 package stepan.gorokhov.paylance.features.home
 
-import stepan.gorokhov.paylance.coreui.routing.BaseRoute
-import stepan.gorokhov.paylance.features.ApplicationRoute
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.serialization.Serializable
 
-private val BASE_ROUTE = ApplicationRoute.Home.route
+@Serializable
+sealed interface HomeRoute {
+    val icon: ImageVector
 
-sealed class HomeRoute(override val route: String) : BaseRoute {
-    data object Profile : HomeRoute("$BASE_ROUTE/profile")
-    data object Tasks : HomeRoute("$BASE_ROUTE/tasks")
+    @Serializable
+    data object Profile : HomeRoute {
+        override val icon: ImageVector
+            get() = Icons.Default.Person
+    }
+
+    @Serializable
+    data object Projects : HomeRoute {
+        override val icon: ImageVector
+            get() = Icons.Default.Home
+    }
+
+    @Serializable
+    data object MyProjects : HomeRoute {
+        override val icon: ImageVector
+            get() = Icons.Default.Build
+    }
 }

@@ -1,11 +1,13 @@
 package stepan.gorokhov.paylance.features.auth.ui
 
+import kotlinx.serialization.Serializable
 import stepan.gorokhov.paylance.coreui.routing.BaseRoute
 import stepan.gorokhov.paylance.features.ApplicationRoute
 
-private val BASE_ROUTE = ApplicationRoute.Auth.route
-
-sealed class AuthRoute(override val route: String) : BaseRoute {
-    data object SignIn : AuthRoute("$BASE_ROUTE/sign_in")
-    data object SignUp : AuthRoute("$BASE_ROUTE/sign_up")
+@Serializable
+sealed class AuthRoute {
+    @Serializable
+    data object SignIn : AuthRoute()
+    @Serializable
+    data object SignUp : AuthRoute()
 }

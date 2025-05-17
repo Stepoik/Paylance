@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +35,7 @@ import stepan.gorokhov.paylance.coreui.routing.popUpGraph
 import stepan.gorokhov.paylance.features.ApplicationRoute
 import stepan.gorokhov.paylance.features.auth.ui.AuthRoute
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
-import stepan.gorokhov.paylance.uikit.components.TextFieldWithIcon
+import stepan.gorokhov.paylance.uikit.components.textfields.TextFieldWithIcon
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
 import stepan.gorokhov.paylance.uikit.images.Lock
 import stepan.gorokhov.paylance.uikit.images.Mail
@@ -47,8 +46,8 @@ fun SignUpScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SignUpEffect.NavigateSignIn -> navController.navigate(AuthRoute.SignIn.route)
-                is SignUpEffect.NavigateHome -> navController.navigate(ApplicationRoute.Home.route) {
+                is SignUpEffect.NavigateSignIn -> navController.navigate(AuthRoute.SignIn)
+                is SignUpEffect.NavigateHome -> navController.navigate(ApplicationRoute.Home) {
                     popUpGraph()
                 }
             }
