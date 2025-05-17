@@ -10,7 +10,7 @@ fun Project.toProjectVO() = ProjectVO(
     clientName = author.name,
     deadline = deadline.toString(),
     workType = "", // TODO: Сделать
-    skills = listOf(),
+    skills = skills,
     status = status,
     isRespond = isRespond
 )

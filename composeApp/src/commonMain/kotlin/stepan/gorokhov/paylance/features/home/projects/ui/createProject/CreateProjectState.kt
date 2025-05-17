@@ -5,16 +5,17 @@ import stepan.gorokhov.paylance.core.time.now
 import stepan.gorokhov.paylance.features.home.projects.domain.models.NewProject
 
 data class CreateProjectState(
-    val isLoading: Boolean = false,
     val title: String = "",
     val description: String = "",
     val budget: String = "",
-    val deadline: LocalDateTime = LocalDateTime.now()
+    val skills: List<String> = listOf(),
+    val deadline: LocalDateTime = LocalDateTime.now(),
+    val isCreating: Boolean = false,
 )
 
-sealed class CreateProjectEffect {
-    data class NavigateProject(val id: String) : CreateProjectEffect()
-    data object NavigateBack : CreateProjectEffect()
+sealed interface CreateProjectEffect {
+    data object NavigateBack : CreateProjectEffect
+    data class NavigateProject(val id: String) : CreateProjectEffect
 }
 
 fun CreateProjectState.toNewProject(): NewProject {
@@ -22,6 +23,7 @@ fun CreateProjectState.toNewProject(): NewProject {
         title = title,
         description = description,
         budget = budget.toDoubleOrNull() ?: 0.0,
-        deadline = deadline
+        deadline = deadline,
+        skills = skills
     )
 }

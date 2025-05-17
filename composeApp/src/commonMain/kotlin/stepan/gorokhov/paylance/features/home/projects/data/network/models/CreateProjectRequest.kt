@@ -8,5 +8,6 @@ data class CreateProjectRequest(
     val title: String,
     val description: String,
     val budget: Double,
-    val deadline: LocalDateTime
+    val deadline: LocalDateTime,
+    val skills: List<String>
 )

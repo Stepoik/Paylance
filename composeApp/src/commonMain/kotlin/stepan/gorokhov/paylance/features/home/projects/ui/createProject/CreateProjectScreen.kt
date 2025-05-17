@@ -1,30 +1,29 @@
 package stepan.gorokhov.paylance.features.home.projects.ui.createProject
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
-import stepan.gorokhov.paylance.uikit.components.BaseButton
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import paylance.composeapp.generated.resources.Res
-import paylance.composeapp.generated.resources.budget_rubles
-import paylance.composeapp.generated.resources.create
-import paylance.composeapp.generated.resources.creating_project
-import paylance.composeapp.generated.resources.description
-import paylance.composeapp.generated.resources.title
+import paylance.composeapp.generated.resources.*
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.MyProjectsRoute
+import stepan.gorokhov.paylance.uikit.components.BaseButton
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
+import stepan.gorokhov.paylance.uikit.components.LoadingButton
 import stepan.gorokhov.paylance.uikit.components.spacer
 import stepan.gorokhov.paylance.uikit.components.textfields.AreaTextField
 import stepan.gorokhov.paylance.uikit.components.textfields.BaseTextField
@@ -62,6 +61,7 @@ fun CreateProjectScreen(presenter: CreateProjectPresenter, state: CreateProjectS
             titleTextField(presenter = presenter, state = state)
             descriptionTextField(presenter = presenter, state = state)
             budgetTextField(presenter = presenter, state = state)
+            skillsSection(presenter = presenter, state = state)
             createButton(presenter = presenter, state = state)
         }
     }
@@ -107,12 +107,84 @@ fun LazyListScope.budgetTextField(presenter: CreateProjectPresenter, state: Crea
     }
 }
 
+fun LazyListScope.skillsSection(presenter: CreateProjectPresenter, state: CreateProjectState) {
+    item {
+        Text(
+            text = "Требуемые навыки",
+            style = PaylanceTheme.typography.titleMedium,
+            color = PaylanceTheme.colors.onBackground
+        )
+    }
+
+    item {
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(state.skills) { skill ->
+                AssistChip(
+                    onClick = { },
+                    label = { Text(skill) },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { presenter.removeSkill(skill) },
+                            modifier = Modifier.size(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Удалить навык",
+                                tint = PaylanceTheme.colors.onSurface,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    item {
+        var newSkill by remember { mutableStateOf("") }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            BaseTextField(
+                value = newSkill,
+                placeholder = "Новый навык",
+                onValueChanged = { newSkill = it },
+                modifier = Modifier.weight(1f)
+            )
+
+            IconButton(
+                onClick = {
+                    if (newSkill.isNotBlank()) {
+                        presenter.addSkill(newSkill)
+                        newSkill = ""
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Добавить навык",
+                    tint = PaylanceTheme.colors.primary
+                )
+            }
+        }
+    }
+}
+
 fun LazyListScope.createButton(presenter: CreateProjectPresenter, state: CreateProjectState) {
     item {
-        BaseButton(
-            stringResource(Res.string.create),
-            onClick = presenter::onClickCreate,
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (state.isCreating) {
+            LoadingButton(Modifier.fillMaxWidth())
+        } else {
+            BaseButton(
+                text = stringResource(Res.string.create),
+                onClick = presenter::onClickCreate,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !state.isCreating
+            )
+        }
     }
 }

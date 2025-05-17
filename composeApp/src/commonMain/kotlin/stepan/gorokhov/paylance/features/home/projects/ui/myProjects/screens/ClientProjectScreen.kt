@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +26,7 @@ import stepan.gorokhov.paylance.features.home.projects.ui.common.projects
 import stepan.gorokhov.paylance.features.home.projects.ui.common.projectListSkeleton
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.MyProjectsPresenter
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.MyProjectsState
+import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
 
 @Composable
@@ -33,9 +38,11 @@ fun ClientProjectScreen(presenter: MyProjectsPresenter, state: MyProjectsState) 
         is MyProjectsState.ProjectsLoaded -> {
             ClientProjectScreen(presenter, state)
         }
+
         is MyProjectsState.Loading -> {
             ClientProjectSkeleton()
         }
+
         is MyProjectsState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -62,15 +69,29 @@ private fun ClientProjectSkeleton() {
 
 @Composable
 fun ClientProjectScreen(presenter: MyProjectsPresenter, state: MyProjectsState.ProjectsLoaded) {
-    Column {
-        if (state.projects.isEmpty()) {
-            CreateProjectAgitation(
-                onClick = presenter::createProject,
-                modifier = Modifier.fillMaxSize()
-            )
-        } else {
-            LazyColumn(Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
-                projects(state.projects, onProjectClick = presenter::openProject)
+    BaseScaffold(
+        floatingActionButton = {
+            if (state.projects.isNotEmpty()) {
+                FloatingActionButton(
+                    onClick = presenter::createProject,
+                    containerColor = PaylanceTheme.colors.surface,
+                    contentColor = PaylanceTheme.colors.primary
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Добавить проект")
+                }
+            }
+        },
+    ) {
+        Column {
+            if (state.projects.isEmpty()) {
+                CreateProjectAgitation(
+                    onClick = presenter::createProject,
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                LazyColumn(Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
+                    projects(state.projects, onProjectClick = presenter::openProject)
+                }
             }
         }
     }

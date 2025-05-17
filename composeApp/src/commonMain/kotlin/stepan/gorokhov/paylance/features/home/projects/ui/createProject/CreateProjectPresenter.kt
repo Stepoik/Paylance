@@ -14,4 +14,8 @@ interface CreateProjectPresenter {
     fun setDeadline(date: LocalDateTime)
 
     fun onClickCreate()
+
+    fun addSkill(skill: String)
+
+    fun removeSkill(skill: String)
 }

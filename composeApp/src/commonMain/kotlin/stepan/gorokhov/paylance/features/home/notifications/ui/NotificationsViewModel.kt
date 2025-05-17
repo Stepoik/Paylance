@@ -31,7 +31,9 @@ class NotificationsViewModel(
 
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.Default) {
-            val offset = _state.value.notifications.size
+            val offset = if (forced) {
+                0
+            } else _state.value.notifications.size
             repository.getNotifications(offset.toLong()).onSuccess { notifications ->
                 val notificationVOs = notifications.map { it.toVO() }
                 _state.update {

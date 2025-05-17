@@ -2,23 +2,25 @@ package stepan.gorokhov.paylance.features.home.projects.ui.createProject
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.datetime.LocalDateTime
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
 import stepan.gorokhov.paylance.features.home.projects.domain.ProjectsRepository
 
 class CreateProjectViewModel(
-    private val projectsRepository: ProjectsRepository
+    private val projectRepository: ProjectsRepository
 ) : ViewModel(), CreateProjectPresenter {
     private val _state = MutableStateFlow(CreateProjectState())
-    val state = _state.asStateFlow()
+    val state: StateFlow<CreateProjectState> = _state.asStateFlow()
 
-    private val _effect = MutableSharedFlow<CreateProjectEffect>()
-    val effect = _effect.asSharedFlow()
+    private val _effect = MutableSharedFlow<CreateProjectEffect>(extraBufferCapacity = 1)
+    val effect: SharedFlow<CreateProjectEffect> = _effect.asSharedFlow()
 
     override fun setTitle(title: String) {
         _state.update { it.copy(title = title) }
@@ -36,17 +38,34 @@ class CreateProjectViewModel(
         _state.update { it.copy(deadline = date) }
     }
 
-    override fun onClickCreate() {
-        if (_state.value.isLoading) return
+    override fun addSkill(skill: String) {
+        val currentSkills = _state.value.skills
+        if (skill !in currentSkills) {
+            _state.update { it.copy(skills = currentSkills + skill) }
+        }
+    }
 
-        _state.update { it.copy(isLoading = true) }
+    override fun removeSkill(skill: String) {
+        val currentSkills = _state.value.skills
+        _state.update { it.copy(skills = currentSkills - skill) }
+    }
+
+    override fun onClickCreate() {
+        val state = _state.value
+        if (state.isCreating) return
+
+        if (state.title.isBlank() || state.description.isBlank() || state.budget.isBlank()) {
+            return
+        }
+
+        _state.update { it.copy(isCreating = true) }
         viewModelScope.launch {
-            projectsRepository.createProject(_state.value.toNewProject()).onSuccess {
-                _effect.emit(CreateProjectEffect.NavigateProject(it.id))
-            }.onFailure {
-                _state.update { it.copy() }
+            projectRepository.createProject(state.toNewProject()).onSuccess { project ->
+                _effect.emit(CreateProjectEffect.NavigateProject(project.id))
+            }.onFailure { error ->
+                // TODO: Показать ошибку
             }
-            _state.update { it.copy(isLoading = false) }
+            _state.update { it.copy(isCreating = false) }
         }
     }
 }

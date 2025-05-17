@@ -21,7 +21,7 @@ fun ProjectDto.toDomain(): Project {
         budget = budget,
         status = status.toDomain(),
         deadline = deadline,
-        skills = listOf(),
+        skills = skills,
         isRespond = isRespond
     )
 }
@@ -47,7 +47,8 @@ fun NewProject.toCreateRequest(): CreateProjectRequest {
     return CreateProjectRequest(
         title = title,
         description = description,
-        budget = 0.0,
-        deadline = LocalDateTime.now()
+        budget = budget,
+        deadline = LocalDateTime.now(),
+        skills = skills
     )
 }

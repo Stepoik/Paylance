@@ -15,7 +15,8 @@ data class ProjectDto(
     val status: ProjectStatusDto,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
-    val isRespond: Boolean
+    val isRespond: Boolean,
+    val skills: List<String>
 )
 
 @Serializable
