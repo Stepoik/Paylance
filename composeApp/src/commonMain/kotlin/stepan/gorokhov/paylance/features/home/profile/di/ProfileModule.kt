@@ -5,6 +5,8 @@ import org.koin.dsl.module
 import stepan.gorokhov.paylance.features.home.profile.data.FirebaseUserRepository
 import stepan.gorokhov.paylance.features.home.profile.data.network.UserApi
 import stepan.gorokhov.paylance.features.home.profile.domain.UserRepository
+import stepan.gorokhov.paylance.features.home.profile.ui.edit.EditProfileViewModel
+import stepan.gorokhov.paylance.features.home.profile.ui.freelancerEdit.FreelancerEditViewModel
 import stepan.gorokhov.paylance.features.home.profile.ui.main.ProfileViewModel
 import stepan.gorokhov.paylance.network.AUTHORIZED_HTTP_CLIENT
 
@@ -13,4 +15,6 @@ val profileModule = module {
     single<UserRepository> { FirebaseUserRepository(get()) }
 
     viewModel { ProfileViewModel(get()) }
+    viewModel { EditProfileViewModel(get()) }
+    viewModel { FreelancerEditViewModel(get()) }
 }

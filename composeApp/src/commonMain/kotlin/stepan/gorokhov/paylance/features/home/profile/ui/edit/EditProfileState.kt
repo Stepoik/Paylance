@@ -26,5 +26,6 @@ data class EditProfileVO(
 interface EditProfilePresenter {
     fun loadProfile()
     fun navigateBack()
-    fun saveProfile(name: String)
+    fun setName(name: String)
+    fun saveProfile()
 } 

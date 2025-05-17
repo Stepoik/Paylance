@@ -13,12 +13,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import org.koin.compose.viewmodel.koinViewModel
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
+import stepan.gorokhov.paylance.features.home.profile.ui.ProfileRoute
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
 import stepan.gorokhov.paylance.uikit.components.spacer
@@ -33,10 +35,10 @@ fun ProfileScreen(navController: NavController) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 is ProfileEffect.NavigateToEditProfile -> {
-                    navController.navigate("edit_profile")
+                    navController.navigate(ProfileRoute.Edit)
                 }
                 is ProfileEffect.NavigateToEditFreelancerProfile -> {
-                    navController.navigate("edit_freelancer_profile")
+                    navController.navigate(ProfileRoute.EditFreelancer)
                 }
             }
         }
@@ -142,7 +144,9 @@ fun LazyListScope.userInfo(profile: ProfileVO) {
                         Text(
                             text = profile.name,
                             style = PaylanceTheme.typography.titleLarge,
-                            color = PaylanceTheme.colors.onBackground
+                            color = PaylanceTheme.colors.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         VerticalSpacer(4.dp)
                         Text(

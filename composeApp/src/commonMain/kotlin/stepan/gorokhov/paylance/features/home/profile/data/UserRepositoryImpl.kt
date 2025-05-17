@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.map
 import stepan.gorokhov.paylance.features.home.profile.data.network.UserApi
 import stepan.gorokhov.paylance.features.home.profile.domain.UserRepository
 import stepan.gorokhov.paylance.features.home.profile.domain.models.FreelancerInfo
+import stepan.gorokhov.paylance.features.home.profile.domain.models.NewFreelancerInfo
 import stepan.gorokhov.paylance.features.home.profile.domain.models.User
 
 class FirebaseUserRepository(
@@ -25,12 +26,30 @@ class FirebaseUserRepository(
     }
 
     override suspend fun updateUser(user: User): Result<Any?> {
-        TODO("Not yet implemented")
+       return runCatching {
+           val currentUser = auth.currentUser
+           currentUser?.updateEmail(user.email)
+           currentUser?.updateProfile(displayName = user.name)
+       }
     }
 
     override suspend fun getUser(): Result<User> {
         return runCatching {
             auth.currentUser!!.toDomain()
+        }
+    }
+
+    override suspend fun getFreelancer(): Result<FreelancerInfo> {
+        return runCatching {
+            val id = auth.currentUser!!.uid
+            userApi.getFreelancer(id).toFreelancerInfo()
+        }
+    }
+
+    override suspend fun updateFreelancer(info: NewFreelancerInfo): Result<Any?> {
+        return runCatching {
+            val request = info.toUpdateFreelancerRequest()
+            userApi.updateFreelancerInfo(request)
         }
     }
 

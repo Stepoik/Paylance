@@ -17,8 +17,12 @@ import androidx.navigation.NavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import org.koin.compose.viewmodel.koinViewModel
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
+import stepan.gorokhov.paylance.features.common.LoadingScreen
+import stepan.gorokhov.paylance.uikit.components.BaseButton
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
+import stepan.gorokhov.paylance.uikit.components.LoadingButton
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
+import stepan.gorokhov.paylance.uikit.components.textfields.BaseOutlinedTextField
 import stepan.gorokhov.paylance.uikit.images.PhotoCamera
 
 @Composable
@@ -62,9 +66,6 @@ private fun EditProfileScreen(
     state: EditProfileState.ProfileLoaded,
     presenter: EditProfilePresenter
 ) {
-    var name by remember { mutableStateOf(state.profile.name) }
-    var isNameError by remember { mutableStateOf(false) }
-
     BaseScaffold(
         topBar = {
             TopAppBar(
@@ -144,58 +145,57 @@ private fun EditProfileScreen(
 
             VerticalSpacer(24.dp)
 
-            // Поле ввода имени
-            OutlinedTextField(
-                value = name,
-                onValueChange = {
-                    name = it
-                    isNameError = false
-                },
-                label = { Text("Имя") },
-                isError = isNameError,
-                supportingText = {
-                    if (isNameError) {
-                        Text("Имя не может быть пустым")
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            VerticalSpacer(24.dp)
-
-            // Email (только для отображения)
-            OutlinedTextField(
-                value = state.profile.email,
-                onValueChange = { },
-                label = { Text("Email") },
-                enabled = false,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            VerticalSpacer(32.dp)
-
-            // Кнопка сохранения
-            Button(
-                onClick = {
-                    if (name.isBlank()) {
-                        isNameError = true
-                        return@Button
-                    }
-                    presenter.saveProfile(name)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.isSaving
-            ) {
-                if (state.isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = PaylanceTheme.colors.onPrimary
-                    )
-                } else {
-                    Text("Сохранить")
-                }
-            }
+            EditProfileForm(state = state, presenter = presenter)
         }
+    }
+}
+
+@Composable
+private fun EditProfileForm(
+    state: EditProfileState.ProfileLoaded,
+    presenter: EditProfilePresenter
+) {
+    var isNameError by remember { mutableStateOf(false) }
+    BaseOutlinedTextField(
+        value = state.profile.name,
+        onValueChange = {
+            isNameError = false
+            presenter.setName(it)
+        },
+        label = "Имя",
+        isError = isNameError,
+        supportingText = if (isNameError) "Имя не может быть пустым" else null,
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    VerticalSpacer(24.dp)
+
+    // Email (только для отображения)
+    BaseOutlinedTextField(
+        value = state.profile.email,
+        onValueChange = { },
+        label = "Email",
+        enabled = false,
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    VerticalSpacer(32.dp)
+
+    if (state.isSaving) {
+        LoadingButton(Modifier.fillMaxWidth())
+    } else {
+        BaseButton(
+            onClick = {
+                if (state.profile.name.isBlank()) {
+                    isNameError = true
+                    return@BaseButton
+                }
+                presenter.saveProfile()
+            },
+            text = "Сохранить",
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !state.isSaving
+        )
     }
 }
 
@@ -212,13 +212,3 @@ private fun ErrorScreen(error: ErrorMessage) {
         )
     }
 }
-
-@Composable
-private fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-} 

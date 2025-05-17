@@ -27,7 +27,7 @@ fun LoadingButton(modifier: Modifier = Modifier) {
             Modifier.fillMaxWidth().padding(vertical = 9.dp, horizontal = 5.dp),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(Modifier.size(24.dp))
+            CircularProgressIndicator(Modifier.size(24.dp), color = PaylanceTheme.colors.primary)
         }
     }
 }
