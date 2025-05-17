@@ -3,6 +3,7 @@ package stepan.gorokhov.paylance.di
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import stepan.gorokhov.paylance.features.auth.di.authModule
+import stepan.gorokhov.paylance.features.home.notifications.di.notificationModule
 import stepan.gorokhov.paylance.features.home.profile.di.profileModule
 import stepan.gorokhov.paylance.features.home.projects.di.projectModule
 import stepan.gorokhov.paylance.features.splash.splashModule
@@ -17,7 +18,8 @@ object KoinSDK {
                 profileModule,
                 splashModule,
                 networkModule,
-                projectModule
+                projectModule,
+                notificationModule
             )
         }
     }

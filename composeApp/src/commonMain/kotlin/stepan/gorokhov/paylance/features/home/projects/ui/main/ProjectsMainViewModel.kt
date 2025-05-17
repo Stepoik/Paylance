@@ -35,7 +35,7 @@ class ProjectsMainViewModel(
         }
         if (_state.value.isLoading) return
 
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch(Dispatchers.Default) {
             val projectsOffset = _state.value.projects.size.toLong()
             projectsRepository.getProjects(projectsOffset).onSuccess { projects ->
@@ -89,7 +89,7 @@ private data class ProjectsMainViewModelState(
             user == null ||
                     !projectsLoaded -> ProjectsMainState.Loading
 
-            error != null -> ProjectsMainState.Error
+            error != null && projects.isEmpty() -> ProjectsMainState.Error(error)
 
             else -> ProjectsMainState.ProjectsLoaded(
                 projects = projects,

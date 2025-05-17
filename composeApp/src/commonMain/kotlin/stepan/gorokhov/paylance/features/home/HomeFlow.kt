@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import stepan.gorokhov.paylance.features.ApplicationRoute
+import stepan.gorokhov.paylance.features.home.notifications.notifications
 import stepan.gorokhov.paylance.features.home.profile.ui.profile
 import stepan.gorokhov.paylance.features.home.projects.projects
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.myProjects
@@ -24,11 +25,18 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
         Scaffold(
             bottomBar = {
                 NavigationBar(containerColor = PaylanceTheme.colors.background) {
-                    val items = listOf(HomeRoute.Projects, HomeRoute.MyProjects, HomeRoute.Profile)
+                    val items = listOf(
+                        HomeRoute.Projects,
+                        HomeRoute.MyProjects,
+                        HomeRoute.Profile,
+                        HomeRoute.Notifications
+                    )
 
                     items.forEach { screen ->
-                        val currentDestination = navController.currentBackStackEntryAsState().value?.destination
-                        val selected = currentDestination?.hierarchy?.any { it.route == screen.toString() } == true
+                        val currentDestination =
+                            navController.currentBackStackEntryAsState().value?.destination
+                        val selected =
+                            currentDestination?.hierarchy?.any { it.route == screen::class.qualifiedName } == true
                         NavigationBarItem(
                             icon = { Icon(screen.icon, contentDescription = null) },
                             colors = NavigationBarItemDefaults.colors(
@@ -56,6 +64,7 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
                 profile(navController)
                 projects(navController)
                 myProjects(navController)
+                notifications(navController)
             }
         }
     }

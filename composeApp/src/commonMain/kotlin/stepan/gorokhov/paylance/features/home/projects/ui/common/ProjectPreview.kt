@@ -17,8 +17,15 @@ import stepan.gorokhov.paylance.features.home.projects.domain.models.Project
 data class ProjectPreview(
     val id: String,
     val title: String,
-    val author: Author,
-    val createdText: String
+    val author: AuthorVO,
+    val createdText: String,
+    val budget: String,
+    val skills: List<String>
+)
+
+data class AuthorVO(
+    val name: String,
+    val rating: String
 )
 
 suspend fun Project.toPreview(): ProjectPreview {
@@ -44,7 +51,16 @@ suspend fun Project.toPreview(): ProjectPreview {
     return ProjectPreview(
         id = id,
         title = title,
-        author = author,
-        createdText = createdText
+        author = author.toVO(),
+        createdText = createdText,
+        budget = budget.toString(),
+        skills = skills
+    )
+}
+
+fun Author.toVO(): AuthorVO {
+    return AuthorVO(
+        name = name,
+        rating = "5.0"
     )
 }

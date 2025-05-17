@@ -1,4 +1,4 @@
-package gorokhov.stepan.paylance.uikit.components
+package stepan.gorokhov.paylance.uikit.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
-import gorokhov.stepan.paylance.uikit.components.BaseButton
+import stepan.gorokhov.paylance.uikit.components.BaseButton
 import kotlinx.coroutines.channels.Channel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel

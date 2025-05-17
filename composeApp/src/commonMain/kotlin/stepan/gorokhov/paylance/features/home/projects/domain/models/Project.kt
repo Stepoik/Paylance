@@ -8,5 +8,17 @@ data class Project(
     val description: String,
     val budget: Double,
     val author: Author,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
+    val deadline: LocalDateTime,
+    val status: ProjectStatus,
+    val skills: List<String>,
+    val isRespond: Boolean
 )
+
+
+enum class ProjectStatus {
+    OPEN,
+    IN_PROGRESS,
+    COMPLETED,
+    CANCELLED
+}

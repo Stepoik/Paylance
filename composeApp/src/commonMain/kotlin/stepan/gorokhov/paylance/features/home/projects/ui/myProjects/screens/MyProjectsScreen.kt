@@ -5,11 +5,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -63,7 +70,11 @@ fun MyProjectsScreen(
     var selectedTab by remember {
         mutableStateOf(0)
     }
-    BaseScaffold {
+    BaseScaffold(
+        topBar = {
+            MyProjectsTopBar()
+        }
+    ) {
         TabRow(
             selectedTabIndex = selectedTab,
             containerColor = PaylanceTheme.colors.background,
@@ -120,5 +131,23 @@ private fun TabText(text: String) {
         text = text,
         style = PaylanceTheme.typography.titleMedium,
         color = PaylanceTheme.colors.onBackground
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MyProjectsTopBar() {
+    TopAppBar(
+        title = {
+            Text(
+                "Мои проекты",
+                style = PaylanceTheme.typography.titleMedium,
+                color = PaylanceTheme.colors.onBackground
+            )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = PaylanceTheme.colors.background
+        ),
+        modifier = Modifier.fillMaxWidth()
     )
 }

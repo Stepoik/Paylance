@@ -1,6 +1,7 @@
 package stepan.gorokhov.paylance.features.home.profile.domain
 
 import kotlinx.coroutines.flow.Flow
+import stepan.gorokhov.paylance.features.home.profile.domain.models.FreelancerInfo
 import stepan.gorokhov.paylance.features.home.profile.domain.models.User
 
 interface UserRepository {
@@ -9,4 +10,8 @@ interface UserRepository {
     suspend fun updateUser(): Result<Any?>
 
     suspend fun getUser(): Result<User>
+
+    suspend fun updateUser(user: User): Result<Any?>
+
+    suspend fun getFreelancerById(freelancerId: String): Result<FreelancerInfo>
 }
