@@ -59,10 +59,15 @@ class ProjectsApi(
         }.body()
     }
 
-    suspend fun findProject(text: String): GetProjectsResponse {
-        return httpClient.get("${Constants.BASE_URL}/search/orders") {
+    suspend fun findProject(text: String, offset: Long): GetProjectsResponse {
+        return httpClient.get("$BASE_URL/search") {
             contentType(ContentType.Application.Json)
-            parameter("text", text)
+            parameter("q", text)
+            parameter("offset", offset)
         }.body()
+    }
+
+    suspend fun closeProject(id: String) {
+        httpClient.post("$BASE_URL/$id/close")
     }
 }

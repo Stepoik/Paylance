@@ -53,7 +53,7 @@ suspend fun Project.toPreview(): ProjectPreview {
         title = title,
         author = author.toVO(),
         createdText = createdText,
-        budget = budget.toString(),
+        budget = "$budget₽",
         skills = skills
     )
 }

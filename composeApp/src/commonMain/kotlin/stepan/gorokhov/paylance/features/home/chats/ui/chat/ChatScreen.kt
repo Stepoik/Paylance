@@ -24,6 +24,7 @@ import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
+import stepan.gorokhov.paylance.features.common.LoadingScreen
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
 import stepan.gorokhov.paylance.uikit.components.textfields.BaseTextField
@@ -68,7 +69,6 @@ fun ChatScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ChatScreen(
     state: ChatState.ChatLoaded,
@@ -236,13 +236,3 @@ private fun ErrorScreen(error: ErrorMessage) {
         )
     }
 }
-
-@Composable
-private fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-} 

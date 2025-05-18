@@ -6,4 +6,6 @@ interface ProjectDetailsPresenter {
     fun responseOnProject()
 
     fun navigateBack()
+
+    fun closeProject()
 }

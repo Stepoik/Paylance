@@ -9,9 +9,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import stepan.gorokhov.paylance.uikit.components.textfields.TextFieldWithIcon
 
+fun LazyListScope.searchTextField(value: String, onValueChanged: (String) -> Unit) {
+    item("search_textfield") {
+        TextFieldWithIcon(
+            icon = Icons.Default.Search,
+            value = value,
+            onValueChanged = onValueChanged,
+            enabled = true,
+            placeholder = "Поиск теста...",
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
 fun LazyListScope.searchButton(onClick: () -> Unit) {
-    item {
-        SearchButton(onClick, modifier = Modifier.fillMaxWidth())
+    item("search_textfield") {
+        SearchButton(onClick = onClick, modifier = Modifier.fillMaxWidth())
     }
 }
 

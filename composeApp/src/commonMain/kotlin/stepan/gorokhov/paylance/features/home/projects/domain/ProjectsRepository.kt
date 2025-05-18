@@ -12,7 +12,9 @@ interface ProjectsRepository {
 
     suspend fun getFreelancerProjects(offset: Long): Result<List<Project>>
 
-    suspend fun findProjects(text: String): Result<List<Project>>
+    suspend fun findProjects(text: String, offset: Long): Result<List<Project>>
 
     suspend fun createProject(project: NewProject): Result<Project>
+
+    suspend fun closeProject(id: String): Result<Unit>
 }

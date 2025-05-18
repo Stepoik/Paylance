@@ -18,7 +18,7 @@ class FirebaseUserRepository(
     override val isAuthorized: Flow<Boolean>
         get() = auth.authStateChanged.map { it != null }
 
-    override suspend fun updateUser(): Result<Any?> {
+    override suspend fun refreshUser(): Result<Any?> {
         return runCatching {
             val currentUser = auth.currentUser!!
             auth.updateCurrentUser(currentUser)

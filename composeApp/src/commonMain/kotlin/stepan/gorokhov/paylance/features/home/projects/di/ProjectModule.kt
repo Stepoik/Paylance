@@ -29,6 +29,6 @@ val projectModule = module {
     viewModel { ClientProjectsViewModel(get()) }
     viewModel { FreelancerProjectsViewModel(get()) }
     viewModel { CreateProjectViewModel(get()) }
-    viewModel { params -> ProjectDetailsViewModel(params.get(), get(), get()) }
+    viewModel { params -> ProjectDetailsViewModel(params.get(), get(), get(), get()) }
     viewModel { params -> ProjectResponseViewModel(params.get(), get(), get()) }
 }

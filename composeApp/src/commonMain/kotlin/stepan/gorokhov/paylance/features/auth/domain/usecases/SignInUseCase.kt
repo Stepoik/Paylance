@@ -10,6 +10,6 @@ class SignInUseCase(
 ) {
     suspend fun execute(signInCredentials: SignInCredentials): Result<Any?> {
         authRepository.signIn(signInCredentials).onFailure { return Result.failure(it) }
-        return userRepository.updateUser()
+        return userRepository.refreshUser()
     }
 }

@@ -36,15 +36,21 @@ class ProjectsRepositoryImpl(
         }
     }
 
-    override suspend fun findProjects(text: String): Result<List<Project>> {
+    override suspend fun findProjects(text: String, offset: Long): Result<List<Project>> {
         return runCatching {
-            projectsApi.findProject(text).projects.map { it.toDomain() }
+            projectsApi.findProject(text = text, offset = offset).projects.map { it.toDomain() }
         }
     }
 
     override suspend fun createProject(project: NewProject): Result<Project> {
         return runCatching {
             projectsApi.createProject(project.toCreateRequest()).toDomain()
+        }
+    }
+
+    override suspend fun closeProject(id: String): Result<Unit> {
+        return runCatching {
+            projectsApi.closeProject(id)
         }
     }
 }

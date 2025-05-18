@@ -8,14 +8,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
+import stepan.gorokhov.paylance.features.home.profile.domain.UserRepository
 import stepan.gorokhov.paylance.features.home.projects.domain.ProjectResponseRepository
 import stepan.gorokhov.paylance.features.home.projects.domain.ProjectsRepository
+import stepan.gorokhov.paylance.features.home.projects.domain.models.ProjectStatus
 import stepan.gorokhov.viboranet.core.flow.mapState
 
 class ProjectDetailsViewModel(
     private val projectId: String,
     private val projectsRepository: ProjectsRepository,
-    private val responseRepository: ProjectResponseRepository
+    private val responseRepository: ProjectResponseRepository,
+    private val userRepository: UserRepository
 ) : ViewModel(), ProjectDetailsPresenter {
     private val _state = MutableStateFlow(ProjectDetailsViewModelState())
     val state = _state.mapState { it.toScreenState() }
@@ -28,8 +31,9 @@ class ProjectDetailsViewModel(
 
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
+            val currentUser = userRepository.getUser().getOrNull()?.id ?: ""
             projectsRepository.getProjectById(id = projectId).onSuccess { project ->
-                _state.update { it.copy(project = project.toProjectVO()) }
+                _state.update { it.copy(project = project.toProjectVO(currentUser)) }
             }
             _state.update { it.copy(isLoading = false) }
         }
@@ -37,6 +41,12 @@ class ProjectDetailsViewModel(
 
     override fun responseOnProject() {
         if (_state.value.isResponding) return
+        
+        val currentProject = _state.value.project
+        if (currentProject?.status == ProjectStatus.CANCELLED) {
+            _state.update { it.copy(error = ErrorMessage("Нельзя откликнуться на закрытый проект")) }
+            return
+        }
 
         _state.update { it.copy(isResponding = true) }
         viewModelScope.launch {
@@ -55,6 +65,20 @@ class ProjectDetailsViewModel(
     override fun navigateBack() {
         viewModelScope.launch {
             _effect.emit(ProjectDetailsEffect.NavigateBack)
+        }
+    }
+
+    override fun closeProject() {
+        if (_state.value.isResponding) return
+
+        _state.update { it.copy(isResponding = true) }
+        viewModelScope.launch {
+            projectsRepository.closeProject(projectId).onSuccess {
+                loadProject()
+            }.onFailure {
+                _state.update { it.copy(error = ErrorMessage("Не удалось закрыть проект")) }
+            }
+            _state.update { it.copy(isResponding = false) }
         }
     }
 }

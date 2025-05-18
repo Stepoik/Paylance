@@ -8,7 +8,7 @@ import stepan.gorokhov.paylance.features.home.profile.domain.models.User
 interface UserRepository {
     val isAuthorized: Flow<Boolean>
 
-    suspend fun updateUser(): Result<Any?>
+    suspend fun refreshUser(): Result<Any?>
 
     suspend fun getUser(): Result<User>
 

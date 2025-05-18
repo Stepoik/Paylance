@@ -10,6 +10,7 @@ import stepan.gorokhov.paylance.features.home.projects.ui.common.ProjectPreview
 sealed class ProjectsMainState {
     data object Loading : ProjectsMainState()
     data class ProjectsLoaded(
+        val searchText: String,
         val user: User,
         val projects: ImmutableList<ProjectPreview> = persistentListOf()
     ) : ProjectsMainState()

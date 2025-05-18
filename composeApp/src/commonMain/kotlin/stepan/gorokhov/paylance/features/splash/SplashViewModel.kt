@@ -1,10 +1,8 @@
 package stepan.gorokhov.paylance.features.splash
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -18,6 +16,7 @@ class SplashViewModel(
 
     fun checkUserAuth() {
         viewModelScope.launch {
+            userRepository.refreshUser()
             if (userRepository.isAuthorized.first()) {
                 _effect.emit(SplashEffect.NavigateTests)
             } else {

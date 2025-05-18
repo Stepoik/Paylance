@@ -45,7 +45,8 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
                             icon = { Icon(screen.icon, contentDescription = null) },
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = PaylanceTheme.colors.primary,
-                                unselectedIconColor = PaylanceTheme.colors.border
+                                unselectedIconColor = PaylanceTheme.colors.border,
+                                indicatorColor = PaylanceTheme.colors.primary.copy(alpha = 0.2f)
                             ),
                             selected = selected,
                             onClick = {

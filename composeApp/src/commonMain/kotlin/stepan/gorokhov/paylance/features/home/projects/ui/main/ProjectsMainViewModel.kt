@@ -6,11 +6,17 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.skip
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
 import stepan.gorokhov.paylance.features.home.profile.domain.UserRepository
 import stepan.gorokhov.paylance.features.home.profile.domain.models.User
@@ -19,6 +25,7 @@ import stepan.gorokhov.paylance.features.home.projects.ui.common.ProjectPreview
 import stepan.gorokhov.paylance.features.home.projects.ui.common.toPreview
 import stepan.gorokhov.viboranet.core.flow.mapState
 
+@OptIn(FlowPreview::class)
 class ProjectsMainViewModel(
     private val projectsRepository: ProjectsRepository,
     private val userRepository: UserRepository
@@ -29,20 +36,40 @@ class ProjectsMainViewModel(
     private val _effect = MutableSharedFlow<ProjectsMainEffect>()
     val effect = _effect.asSharedFlow()
 
-    override fun loadProjects() {
+    private val searchTextFlow = MutableStateFlow("")
+    private var searchJob: Job? = null
+
+    init {
+        viewModelScope.launch {
+            searchTextFlow.drop(1).debounce(SEARCH_DEBOUNCE).collect {
+                loadProjects(forced = true)
+            }
+        }
+    }
+
+    override fun loadProjects(forced: Boolean) {
         if (_state.value.user == null) {
             loadUser()
         }
-        if (_state.value.isLoading) return
+        val state = _state.value
+        if (state.isLoading && !forced) return
 
         _state.update { it.copy(isLoading = true, error = null) }
-        viewModelScope.launch(Dispatchers.Default) {
-            val projectsOffset = _state.value.projects.size.toLong()
-            projectsRepository.getProjects(projectsOffset).onSuccess { projects ->
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch(Dispatchers.Default) {
+            val projectsOffset = if (forced) 0 else state.projects.size.toLong()
+            val text = state.searchText
+            val projectsResult = if (text.isNotEmpty()) {
+                projectsRepository.findProjects(text = text, offset = projectsOffset)
+            } else {
+                projectsRepository.getProjects(projectsOffset)
+            }
+
+            projectsResult.onSuccess { projects ->
                 val previews = projects.map { it.toPreview() }
-                _state.update { it.copy(projects = (it.projects + previews).toImmutableList()) }
+                val newProjects = if (forced) previews else (state.projects + previews)
+                _state.update { it.copy(projects = newProjects.toImmutableList()) }
             }.onFailure {
-                println(it)
                 _state.update { it.copy(error = ErrorMessage("")) }
             }
             _state.update { it.copy(projectsLoaded = true, isLoading = false) }
@@ -61,6 +88,11 @@ class ProjectsMainViewModel(
         }
     }
 
+    override fun setSearchText(text: String) {
+        _state.update { it.copy(searchText = text) }
+        searchTextFlow.value = text
+    }
+
     private fun loadUser() {
         viewModelScope.launch {
             userRepository.getUser().onFailure {
@@ -75,9 +107,14 @@ class ProjectsMainViewModel(
             }
         }
     }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE = 300L
+    }
 }
 
 private data class ProjectsMainViewModelState(
+    val searchText: String = "",
     val isLoading: Boolean = false,
     val projectsLoaded: Boolean = false,
     val projects: ImmutableList<ProjectPreview> = persistentListOf(),
@@ -93,7 +130,8 @@ private data class ProjectsMainViewModelState(
 
             else -> ProjectsMainState.ProjectsLoaded(
                 projects = projects,
-                user = user
+                user = user,
+                searchText = searchText
             )
         }
     }

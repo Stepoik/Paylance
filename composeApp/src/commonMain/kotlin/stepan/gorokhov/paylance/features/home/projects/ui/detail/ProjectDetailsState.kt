@@ -24,7 +24,8 @@ data class ProjectVO(
     val workType: String,
     val skills: List<String>,
     val status: ProjectStatus,
-    val isRespond: Boolean
+    val isRespond: Boolean,
+    val isOwner: Boolean
 )
 
 sealed class ProjectDetailsEffect {

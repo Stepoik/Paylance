@@ -24,6 +24,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
 import stepan.gorokhov.paylance.features.common.LoadingScreen
+import stepan.gorokhov.paylance.features.home.projects.domain.models.ProjectStatus
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.LoadingButton
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
@@ -111,6 +112,7 @@ fun ProjectDetailsScreen(
             skillsSection(state.project.skills)
             spacer(24.dp)
             actionButtons(
+                state = state,
                 isResponding = state.isResponding,
                 isRespond = state.project.isRespond,
                 presenter = presenter
@@ -270,6 +272,7 @@ private fun Chip(
 }
 
 fun LazyListScope.actionButtons(
+    state: ProjectDetailsState.ProjectLoaded,
     isResponding: Boolean,
     isRespond: Boolean,
     presenter: ProjectDetailsPresenter
@@ -279,21 +282,36 @@ fun LazyListScope.actionButtons(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            if (isResponding) {
-                LoadingButton(modifier = Modifier.weight(1f))
-            } else if (isRespond) {
+            if (state.project.isOwner) {
                 BaseButton(
-                    "Заявка уже оставлена",
-                    onClick = {},
-                    enabled = false,
+                    "Закрыть проект",
+                    onClick = presenter::closeProject,
                     modifier = Modifier.weight(1f)
                 )
             } else {
-                BaseButton(
-                    "Оставить заявку",
-                    onClick = presenter::responseOnProject,
-                    modifier = Modifier.weight(1f)
-                )
+                if (state.project.status == ProjectStatus.CANCELLED) {
+                    BaseButton(
+                        "Проект закрыт",
+                        onClick = {},
+                        enabled = false,
+                        modifier = Modifier.weight(1f)
+                    )
+                } else if (isResponding) {
+                    LoadingButton(modifier = Modifier.weight(1f))
+                } else if (isRespond) {
+                    BaseButton(
+                        "Заявка уже оставлена",
+                        onClick = {},
+                        enabled = false,
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    BaseButton(
+                        "Оставить заявку",
+                        onClick = presenter::responseOnProject,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
             IconButton(
                 onClick = { /* TODO: Сохранить в избранное */ },

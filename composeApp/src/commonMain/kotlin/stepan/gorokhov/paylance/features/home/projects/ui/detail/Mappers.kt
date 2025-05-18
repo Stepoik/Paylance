@@ -1,16 +1,19 @@
 package stepan.gorokhov.paylance.features.home.projects.ui.detail
 
+import stepan.gorokhov.paylance.core.time.formatDateHoursMinutes
+import stepan.gorokhov.paylance.core.time.fromUTC
 import stepan.gorokhov.paylance.features.home.projects.domain.models.Project
 
-fun Project.toProjectVO() = ProjectVO(
+fun Project.toProjectVO(userId: String) = ProjectVO(
     id = id,
     title = title,
     description = description,
-    budget = budget.toString(),
+    budget = "$budget₽",
     clientName = author.name,
-    deadline = deadline.toString(),
+    deadline = deadline.fromUTC().formatDateHoursMinutes(),
     workType = "", // TODO: Сделать
     skills = skills,
     status = status,
-    isRespond = isRespond
+    isRespond = isRespond,
+    isOwner = author.id == userId
 )

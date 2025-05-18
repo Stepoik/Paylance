@@ -23,6 +23,7 @@ import stepan.gorokhov.paylance.features.home.projects.ui.ProjectsRoute
 import stepan.gorokhov.paylance.features.home.projects.ui.common.projects
 import stepan.gorokhov.paylance.features.home.projects.ui.common.projectListSkeleton
 import stepan.gorokhov.paylance.features.home.projects.ui.main.components.searchButton
+import stepan.gorokhov.paylance.features.home.projects.ui.main.components.searchTextField
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.HorizontalSpacer
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
@@ -134,7 +135,7 @@ fun ProjectsMainScreen(state: ProjectsMainState.ProjectsLoaded, presenter: Proje
                 )
             }
             spacer(20.dp)
-            searchButton { }
+            searchTextField(state.searchText, onValueChanged = presenter::setSearchText)
             projects(state.projects, onProjectClick = presenter::onProjectClicked)
         }
     }
