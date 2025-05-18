@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import stepan.gorokhov.paylance.features.ApplicationRoute
+import stepan.gorokhov.paylance.features.home.chats.chat
 import stepan.gorokhov.paylance.features.home.notifications.notifications
 import stepan.gorokhov.paylance.features.home.profile.ui.profile
 import stepan.gorokhov.paylance.features.home.projects.projects
@@ -26,12 +27,13 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
         val navController = rememberNavController()
         Scaffold(
             bottomBar = {
-                NavigationBar(containerColor = PaylanceTheme.colors.background) {
+                NavigationBar(containerColor = PaylanceTheme.colors.surface) {
                     val items = listOf(
                         HomeRoute.Projects,
                         HomeRoute.MyProjects,
+                        HomeRoute.Chats,
+                        HomeRoute.Notifications,
                         HomeRoute.Profile,
-                        HomeRoute.Notifications
                     )
 
                     items.forEach { screen ->
@@ -67,6 +69,7 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
                 projects(navController)
                 myProjects(navController)
                 notifications(navController)
+                chat(navController)
             }
         }
     }

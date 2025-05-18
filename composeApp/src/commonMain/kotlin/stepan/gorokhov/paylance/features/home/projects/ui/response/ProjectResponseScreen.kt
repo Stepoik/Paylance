@@ -22,6 +22,7 @@ import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
+import stepan.gorokhov.paylance.features.common.LoadingScreen
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.LoadingButton
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
@@ -234,6 +235,10 @@ fun LazyListScope.actionButtons(
             } else {
                 OutlinedButton(
                     onClick = presenter::rejectResponse,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = PaylanceTheme.colors.background,
+                        contentColor = PaylanceTheme.colors.primary
+                    ),
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Отклонить")
@@ -256,13 +261,3 @@ private fun ErrorScreen(error: ErrorMessage) {
         )
     }
 }
-
-@Composable
-private fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-} 
