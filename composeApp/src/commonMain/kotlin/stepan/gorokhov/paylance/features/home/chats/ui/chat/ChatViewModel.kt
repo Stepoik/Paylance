@@ -32,6 +32,19 @@ class ChatViewModel(
     private val _effect = MutableSharedFlow<ChatEffect>(extraBufferCapacity = 1)
     val effect: SharedFlow<ChatEffect> = _effect.asSharedFlow()
 
+    init {
+        viewModelScope.launch(Dispatchers.Default) {
+            chatsRepository.subscribeOnChat(chatId).collect { message ->
+                _state.update { state ->
+                    val userId = userRepository.getUser().getOrNull()?.id ?: ""
+                    state.copy(
+                        messages = (state.messages + message.toVO(userId)).toImmutableList()
+                    )
+                }
+            }
+        }
+    }
+
     override fun loadChat() {
         if (_state.value.isLoadingChat) return
 
@@ -74,17 +87,9 @@ class ChatViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             val state = _state.value
             val newMessage = NewMessage(chatId = chatId, text = text)
-            val messages = (state.messages + MessageVO(
-                id = "",
-                text = text,
-                time = LocalDateTime.now().toString(),
-                isOutgoing = true
-            )).toImmutableList()
-            _state.update { it.copy(messages = messages) }
             chatsRepository.sendMessage(newMessage)
                 .onSuccess { message -> }
                 .onFailure {
-                    println(it)
                     _state.update { it.copy(messages = state.messages) }
                 }
         }

@@ -1,6 +1,8 @@
 package stepan.gorokhov.paylance.features.home.chats.data
 
+import kotlinx.coroutines.flow.Flow
 import stepan.gorokhov.paylance.features.home.chats.data.network.ChatApi
+import stepan.gorokhov.paylance.features.home.chats.data.network.ChatWebSocketStore
 import stepan.gorokhov.paylance.features.home.chats.data.network.models.CreateMessageRequest
 import stepan.gorokhov.paylance.features.home.chats.domain.ChatsRepository
 import stepan.gorokhov.paylance.features.home.chats.domain.models.Chat
@@ -8,7 +10,8 @@ import stepan.gorokhov.paylance.features.home.chats.domain.models.ChatMessage
 import stepan.gorokhov.paylance.features.home.chats.domain.models.NewMessage
 
 class ChatsRepositoryImpl(
-    private val chatApi: ChatApi
+    private val chatApi: ChatApi,
+    private val webSocketStore: ChatWebSocketStore
 ) : ChatsRepository {
     override suspend fun getChats(offset: Long): Result<List<Chat>> {
         return runCatching {
@@ -33,5 +36,9 @@ class ChatsRepositoryImpl(
         return runCatching {
             chatApi.getMessages(chatId = chatId, offset = offset).messages.map { it.toDomain() }
         }
+    }
+
+    override suspend fun subscribeOnChat(chatId: String): Flow<ChatMessage> {
+        return webSocketStore.connect(chatId)
     }
 }

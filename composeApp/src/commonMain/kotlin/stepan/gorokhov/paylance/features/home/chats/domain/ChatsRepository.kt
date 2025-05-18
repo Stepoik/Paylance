@@ -1,5 +1,6 @@
 package stepan.gorokhov.paylance.features.home.chats.domain
 
+import kotlinx.coroutines.flow.Flow
 import stepan.gorokhov.paylance.features.home.chats.domain.models.Chat
 import stepan.gorokhov.paylance.features.home.chats.domain.models.ChatMessage
 import stepan.gorokhov.paylance.features.home.chats.domain.models.NewMessage
@@ -12,4 +13,6 @@ interface ChatsRepository {
     suspend fun sendMessage(message: NewMessage): Result<Any?>
 
     suspend fun getMessages(chatId: String, offset: Long): Result<List<ChatMessage>>
+
+    suspend fun subscribeOnChat(chatId: String): Flow<ChatMessage>
 }
