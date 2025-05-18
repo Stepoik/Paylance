@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -101,6 +102,13 @@ private fun SignUpForm(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        TextFieldWithIcon(
+            icon = Icons.Default.Person,
+            value = state.name,
+            placeholder = "Имя",
+            onValueChanged = { presenter.setName(it) },
+            modifier = Modifier.fillMaxWidth()
+        )
         TextFieldWithIcon(
             icon = Icons.Mail,
             value = state.email,

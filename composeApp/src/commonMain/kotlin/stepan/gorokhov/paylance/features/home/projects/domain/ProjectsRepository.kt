@@ -1,5 +1,6 @@
 package stepan.gorokhov.paylance.features.home.projects.domain
 
+import stepan.gorokhov.paylance.features.home.projects.domain.models.GeneratedDescription
 import stepan.gorokhov.paylance.features.home.projects.domain.models.NewProject
 import stepan.gorokhov.paylance.features.home.projects.domain.models.Project
 
@@ -17,4 +18,6 @@ interface ProjectsRepository {
     suspend fun createProject(project: NewProject): Result<Project>
 
     suspend fun closeProject(id: String): Result<Unit>
+
+    suspend fun generateProjectDescription(prompt: String): Result<GeneratedDescription>
 }

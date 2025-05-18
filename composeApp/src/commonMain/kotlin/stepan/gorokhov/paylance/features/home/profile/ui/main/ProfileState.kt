@@ -27,4 +27,5 @@ interface ProfilePresenter {
     fun loadProfile()
     fun navigateToEditProfile()
     fun navigateToEditFreelancerProfile()
+    fun logout()
 } 

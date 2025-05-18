@@ -17,7 +17,8 @@ class FirebaseAuthRepository : AuthRepository {
 
     override suspend fun signUp(credentials: SignUpCredentials): Result<Any?> {
         return runCatching {
-            auth.createUserWithEmailAndPassword(email = credentials.login, password = credentials.password).user!!
+            val user = auth.createUserWithEmailAndPassword(email = credentials.login, password = credentials.password).user!!
+            user.updateProfile(displayName = credentials.name)
         }
     }
 

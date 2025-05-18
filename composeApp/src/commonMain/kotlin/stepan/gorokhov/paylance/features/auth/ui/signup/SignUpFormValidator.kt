@@ -12,6 +12,9 @@ fun SignUpState.validateCredentials(): ValidationResult<SignUpError> {
     if (password != passwordConfirmation) {
         return ValidationResult.failed(SignUpError.MismatchedPasswords())
     }
+    if (name.isEmpty()) {
+        return ValidationResult.failed(SignUpError.IncorrectCredentials())
+    }
     return ValidationResult.success()
 }
 

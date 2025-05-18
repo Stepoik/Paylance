@@ -56,10 +56,15 @@ class SignUpViewModel(
             _effect.emit(SignUpEffect.NavigateSignIn)
         }
     }
+
+    override fun setName(name: String) {
+        _state.update { it.copy(name = name) }
+    }
 }
 
 private fun SignUpState.toSignUpCredentials(): SignUpCredentials {
     return SignUpCredentials(
+        name = name,
         login = email,
         password = password
     )

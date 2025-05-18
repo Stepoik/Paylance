@@ -50,7 +50,7 @@ fun MyProjectsScreen(navController: NavController) {
         val freelancerEffect = freelancerViewModel.effect
         merge(clientEffect, freelancerEffect).collect { effect ->
             when (effect) {
-                is MyProjectsEffect.NavigateCreateProject -> navController.navigate(MyProjectsRoute.CreateProject)
+                is MyProjectsEffect.NavigateCreateProject -> navController.navigate(MyProjectsRoute.CreateProject())
                 is MyProjectsEffect.NavigateProject -> navController.navigate(
                     MyProjectsRoute.Details(
                         effect.id

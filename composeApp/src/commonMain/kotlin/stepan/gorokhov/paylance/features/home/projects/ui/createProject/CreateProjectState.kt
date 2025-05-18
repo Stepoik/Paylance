@@ -16,6 +16,7 @@ data class CreateProjectState(
 sealed interface CreateProjectEffect {
     data object NavigateBack : CreateProjectEffect
     data class NavigateProject(val id: String) : CreateProjectEffect
+    data object NavigateGenerateProject : CreateProjectEffect
 }
 
 fun CreateProjectState.toNewProject(): NewProject {

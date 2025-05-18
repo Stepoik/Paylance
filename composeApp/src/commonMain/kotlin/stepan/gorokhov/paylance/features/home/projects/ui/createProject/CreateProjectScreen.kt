@@ -18,25 +18,32 @@ import androidx.navigation.NavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import paylance.composeapp.generated.resources.Res
 import paylance.composeapp.generated.resources.*
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.MyProjectsRoute
 import stepan.gorokhov.paylance.uikit.components.BaseButton
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.LoadingButton
+import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
 import stepan.gorokhov.paylance.uikit.components.spacer
 import stepan.gorokhov.paylance.uikit.components.textfields.AreaTextField
 import stepan.gorokhov.paylance.uikit.components.textfields.BaseTextField
 
 @Composable
-fun CreateProjectScreen(navController: NavController) {
-    val viewModel = koinViewModel<CreateProjectViewModel>()
+fun CreateProjectScreen(navController: NavController, title: String, description: String) {
+    val viewModel =
+        koinViewModel<CreateProjectViewModel>(parameters = { parametersOf(title, description) })
     val state = viewModel.state.collectAsStateWithLifecycle().value
     LaunchedEffect(Unit) {
         viewModel.effect.collect {
             when (it) {
                 is CreateProjectEffect.NavigateBack -> navController.navigateUp()
-                is CreateProjectEffect.NavigateProject -> navController.navigate(MyProjectsRoute.Details(it.id))
+                is CreateProjectEffect.NavigateProject ->
+                    navController.navigate(MyProjectsRoute.Details(it.id))
+
+                is CreateProjectEffect.NavigateGenerateProject ->
+                    navController.navigate(MyProjectsRoute.GenerateProject)
             }
         }
     }
@@ -176,15 +183,23 @@ fun LazyListScope.skillsSection(presenter: CreateProjectPresenter, state: Create
 
 fun LazyListScope.createButton(presenter: CreateProjectPresenter, state: CreateProjectState) {
     item {
-        if (state.isCreating) {
-            LoadingButton(Modifier.fillMaxWidth())
-        } else {
+        Column {
             BaseButton(
-                text = stringResource(Res.string.create),
-                onClick = presenter::onClickCreate,
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.isCreating
+                text = "Сгенерировать задачу",
+                onClick = presenter::onClickGenerateProject,
+                modifier = Modifier.fillMaxWidth()
             )
+            VerticalSpacer(20.dp)
+            if (state.isCreating) {
+                LoadingButton(Modifier.fillMaxWidth())
+            } else {
+                BaseButton(
+                    text = stringResource(Res.string.create),
+                    onClick = presenter::onClickCreate,
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !state.isCreating
+                )
+            }
         }
     }
 }

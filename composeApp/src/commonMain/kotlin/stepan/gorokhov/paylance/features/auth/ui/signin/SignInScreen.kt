@@ -59,8 +59,8 @@ fun SignInScreen(state: SignInState, presenter: SignInPresenter) {
     BaseScaffold {
         Column(
             Modifier
-                .verticalScroll(rememberScrollState())
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

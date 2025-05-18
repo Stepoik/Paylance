@@ -10,11 +10,13 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
+import stepan.gorokhov.paylance.features.auth.domain.AuthRepository
 import stepan.gorokhov.paylance.features.home.profile.domain.UserRepository
 import stepan.gorokhov.viboranet.core.flow.mapState
 
 class ProfileViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel(), ProfilePresenter {
     private val _state = MutableStateFlow(ProfileViewModelState())
     val state: StateFlow<ProfileState> = _state.mapState { it.toScreenState() }
@@ -30,7 +32,13 @@ class ProfileViewModel(
             userRepository.getUser().onSuccess { user ->
                 _state.update { it.copy(profile = user.toVO()) }
             }.onFailure { error ->
-                _state.update { it.copy(error = ErrorMessage(error.message ?: "Не удалось загрузить профиль")) }
+                _state.update {
+                    it.copy(
+                        error = ErrorMessage(
+                            error.message ?: "Не удалось загрузить профиль"
+                        )
+                    )
+                }
             }
             _state.update { it.copy(isLoading = false) }
         }
@@ -42,6 +50,12 @@ class ProfileViewModel(
 
     override fun navigateToEditFreelancerProfile() {
         _effect.tryEmit(ProfileEffect.NavigateToEditFreelancerProfile)
+    }
+
+    override fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
     }
 }
 

@@ -6,6 +6,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -15,6 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
+import org.koin.compose.viewmodel.koinViewModel
+import stepan.gorokhov.paylance.coreui.routing.popUpGraph
 import stepan.gorokhov.paylance.features.ApplicationRoute
 import stepan.gorokhov.paylance.features.home.chats.chat
 import stepan.gorokhov.paylance.features.home.notifications.notifications
@@ -24,6 +27,14 @@ import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.myProjects
 
 fun NavGraphBuilder.home(parentNavController: NavController) {
     composable<ApplicationRoute.Home> {
+        val viewModel = koinViewModel<HomeViewModel>()
+        LaunchedEffect(Unit) {
+            viewModel.isAuthorized.collect {
+                if (!it) {
+                    parentNavController.navigate(ApplicationRoute.Auth) { popUpGraph() }
+                }
+            }
+        }
         val navController = rememberNavController()
         Scaffold(
             bottomBar = {
@@ -65,7 +76,11 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
                 }
             }
         ) {
-            NavHost(navController, startDestination = HomeRoute.Projects, modifier = Modifier.padding(it)) {
+            NavHost(
+                navController,
+                startDestination = HomeRoute.Projects,
+                modifier = Modifier.padding(it)
+            ) {
                 profile(navController)
                 projects(navController)
                 myProjects(navController)

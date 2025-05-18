@@ -10,6 +10,8 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.CreateProjectRequest
+import stepan.gorokhov.paylance.features.home.projects.data.network.models.GenerateDescriptionRequest
+import stepan.gorokhov.paylance.features.home.projects.data.network.models.GenerateDescriptionResponse
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.GetProjectsResponse
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.ProjectDto
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.UpdateProjectRequest
@@ -69,5 +71,11 @@ class ProjectsApi(
 
     suspend fun closeProject(id: String) {
         httpClient.post("$BASE_URL/$id/close")
+    }
+
+    suspend fun generateDescription(request: GenerateDescriptionRequest): GenerateDescriptionResponse {
+        return httpClient.post("$BASE_URL/generate-description") {
+            setBody(request)
+        }.body()
     }
 }

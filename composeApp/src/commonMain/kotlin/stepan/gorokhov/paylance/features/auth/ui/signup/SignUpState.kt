@@ -13,6 +13,7 @@ data class SignUpState(
     val email: String = "",
     val password: String = "",
     val passwordConfirmation: String = "",
+    val name: String = "",
     val isSinging: Boolean = false,
     val error: SignUpError? = null
 )

@@ -18,4 +18,6 @@ interface CreateProjectPresenter {
     fun addSkill(skill: String)
 
     fun removeSkill(skill: String)
+
+    fun onClickGenerateProject()
 }

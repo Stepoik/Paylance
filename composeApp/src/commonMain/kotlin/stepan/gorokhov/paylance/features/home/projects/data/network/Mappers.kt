@@ -4,9 +4,11 @@ import kotlinx.datetime.LocalDateTime
 import stepan.gorokhov.paylance.core.time.now
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.AuthorDto
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.CreateProjectRequest
+import stepan.gorokhov.paylance.features.home.projects.data.network.models.GenerateDescriptionResponse
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.ProjectDto
 import stepan.gorokhov.paylance.features.home.projects.data.network.models.ProjectStatusDto
 import stepan.gorokhov.paylance.features.home.projects.domain.models.Author
+import stepan.gorokhov.paylance.features.home.projects.domain.models.GeneratedDescription
 import stepan.gorokhov.paylance.features.home.projects.domain.models.NewProject
 import stepan.gorokhov.paylance.features.home.projects.domain.models.Project
 import stepan.gorokhov.paylance.features.home.projects.domain.models.ProjectStatus
@@ -51,4 +53,8 @@ fun NewProject.toCreateRequest(): CreateProjectRequest {
         deadline = LocalDateTime.now(),
         skills = skills
     )
+}
+
+fun GenerateDescriptionResponse.toDomain(): GeneratedDescription {
+    return GeneratedDescription(title = title, description = description)
 }

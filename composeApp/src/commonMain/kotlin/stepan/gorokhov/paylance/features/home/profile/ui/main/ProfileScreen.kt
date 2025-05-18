@@ -21,6 +21,7 @@ import gorokhov.stepan.paylance.uikit.PaylanceTheme
 import org.koin.compose.viewmodel.koinViewModel
 import stepan.gorokhov.paylance.coreui.models.ErrorMessage
 import stepan.gorokhov.paylance.features.home.profile.ui.ProfileRoute
+import stepan.gorokhov.paylance.uikit.components.BaseButton
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
 import stepan.gorokhov.paylance.uikit.components.VerticalSpacer
 import stepan.gorokhov.paylance.uikit.components.spacer
@@ -29,7 +30,7 @@ import stepan.gorokhov.paylance.uikit.images.Work
 @Composable
 fun ProfileScreen(navController: NavController) {
     val viewModel = koinViewModel<ProfileViewModel>()
-    
+
     LaunchedEffect(Unit) {
         viewModel.loadProfile()
         viewModel.effect.collect { effect ->
@@ -37,6 +38,7 @@ fun ProfileScreen(navController: NavController) {
                 is ProfileEffect.NavigateToEditProfile -> {
                     navController.navigate(ProfileRoute.Edit)
                 }
+
                 is ProfileEffect.NavigateToEditFreelancerProfile -> {
                     navController.navigate(ProfileRoute.EditFreelancer)
                 }
@@ -51,12 +53,15 @@ fun ProfileScreen(navController: NavController) {
                 presenter = viewModel
             )
         }
+
         is ProfileState.Error -> {
             ErrorScreen(error = state.error)
         }
+
         ProfileState.Loading -> {
             LoadingScreen()
         }
+
         ProfileState.Idle -> {
             // Ничего не показываем
         }
@@ -94,6 +99,8 @@ private fun ProfileScreen(
             userInfo(state.profile)
             spacer(24.dp)
             editButtons(presenter)
+            spacer(12.dp)
+            logoutButton(presenter)
         }
     }
 }
@@ -121,7 +128,6 @@ fun LazyListScope.userInfo(profile: ProfileVO) {
                         contentAlignment = Alignment.Center
                     ) {
                         if (profile.avatarUrl != null) {
-                            // TODO: Добавить загрузку изображения
                             Icon(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = null,
@@ -137,9 +143,9 @@ fun LazyListScope.userInfo(profile: ProfileVO) {
                             )
                         }
                     }
-                    
+
                     Spacer(modifier = Modifier.width(16.dp))
-                    
+
                     Column {
                         Text(
                             text = profile.name,
@@ -180,7 +186,7 @@ fun LazyListScope.editButtons(presenter: ProfilePresenter) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Редактировать профиль", color = PaylanceTheme.colors.primary)
             }
-            
+
             OutlinedButton(
                 onClick = presenter::navigateToEditFreelancerProfile,
                 modifier = Modifier.fillMaxWidth()
@@ -195,6 +201,12 @@ fun LazyListScope.editButtons(presenter: ProfilePresenter) {
                 Text("Редактировать профиль фрилансера", color = PaylanceTheme.colors.primary)
             }
         }
+    }
+}
+
+fun LazyListScope.logoutButton(presenter: ProfilePresenter) {
+    item {
+        BaseButton(text = "Выйти", onClick = presenter::logout, modifier = Modifier.fillMaxWidth())
     }
 }
 

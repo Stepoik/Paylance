@@ -4,6 +4,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import stepan.gorokhov.paylance.features.auth.di.authModule
 import stepan.gorokhov.paylance.features.home.chats.di.chatModule
+import stepan.gorokhov.paylance.features.home.homeModule
 import stepan.gorokhov.paylance.features.home.notifications.di.notificationModule
 import stepan.gorokhov.paylance.features.home.profile.di.profileModule
 import stepan.gorokhov.paylance.features.home.projects.di.projectModule
@@ -21,7 +22,8 @@ object KoinSDK {
                 networkModule,
                 projectModule,
                 notificationModule,
-                chatModule
+                chatModule,
+                homeModule
             )
         }
     }

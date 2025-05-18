@@ -14,7 +14,7 @@ val profileModule = module {
     single { UserApi(get(AUTHORIZED_HTTP_CLIENT)) }
     single<UserRepository> { FirebaseUserRepository(get()) }
 
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
     viewModel { EditProfileViewModel(get()) }
     viewModel { FreelancerEditViewModel(get()) }
 }

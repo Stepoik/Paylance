@@ -14,9 +14,12 @@ import kotlinx.datetime.LocalDateTime
 import stepan.gorokhov.paylance.features.home.projects.domain.ProjectsRepository
 
 class CreateProjectViewModel(
+    title: String,
+    description: String,
     private val projectRepository: ProjectsRepository
 ) : ViewModel(), CreateProjectPresenter {
-    private val _state = MutableStateFlow(CreateProjectState())
+    private val _state =
+        MutableStateFlow(CreateProjectState(title = title, description = description))
     val state: StateFlow<CreateProjectState> = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<CreateProjectEffect>(extraBufferCapacity = 1)
@@ -48,6 +51,10 @@ class CreateProjectViewModel(
     override fun removeSkill(skill: String) {
         val currentSkills = _state.value.skills
         _state.update { it.copy(skills = currentSkills - skill) }
+    }
+
+    override fun onClickGenerateProject() {
+        _effect.tryEmit(CreateProjectEffect.NavigateGenerateProject)
     }
 
     override fun onClickCreate() {

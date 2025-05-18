@@ -10,16 +10,25 @@ import stepan.gorokhov.paylance.coreui.routing.BaseRoute
 import stepan.gorokhov.paylance.features.home.HomeRoute
 import stepan.gorokhov.paylance.features.home.projects.ui.createProject.CreateProjectScreen
 import stepan.gorokhov.paylance.features.home.projects.ui.detail.ProjectDetailsScreen
+import stepan.gorokhov.paylance.features.home.projects.ui.generateDescription.GenerateDescriptionScreen
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.screens.MyProjectsScreen
 
 @Serializable
 sealed class MyProjectsRoute {
     @Serializable
     data object Main : MyProjectsRoute()
+
     @Serializable
     data class Details(val id: String) : MyProjectsRoute()
+
     @Serializable
-    data object CreateProject : MyProjectsRoute()
+    data class CreateProject(
+        val title: String = "",
+        val description: String = ""
+    ) : MyProjectsRoute()
+
+    @Serializable
+    data object GenerateProject : MyProjectsRoute()
 }
 
 fun NavGraphBuilder.myProjects(navController: NavController) {
@@ -29,12 +38,16 @@ fun NavGraphBuilder.myProjects(navController: NavController) {
         }
 
         composable<MyProjectsRoute.CreateProject> {
-            CreateProjectScreen(navController)
+            val route = it.toRoute<MyProjectsRoute.CreateProject>()
+            CreateProjectScreen(navController, title = route.title, description = route.description)
         }
 
         composable<MyProjectsRoute.Details> { backStackEntry ->
             val id = backStackEntry.toRoute<MyProjectsRoute.Details>().id
             ProjectDetailsScreen(navController, projectId = id)
+        }
+        composable<MyProjectsRoute.GenerateProject> {
+            GenerateDescriptionScreen(navController)
         }
     }
 }

@@ -10,4 +10,6 @@ interface SignUpPresenter {
     fun onSignUpClicked()
 
     fun navigateSignIn()
+
+    fun setName(name: String)
 }

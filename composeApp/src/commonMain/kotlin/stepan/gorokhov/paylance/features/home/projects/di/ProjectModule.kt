@@ -11,6 +11,7 @@ import stepan.gorokhov.paylance.features.home.projects.domain.ProjectsRepository
 import stepan.gorokhov.paylance.features.home.projects.domain.usecases.GetResponseUseCase
 import stepan.gorokhov.paylance.features.home.projects.ui.createProject.CreateProjectViewModel
 import stepan.gorokhov.paylance.features.home.projects.ui.detail.ProjectDetailsViewModel
+import stepan.gorokhov.paylance.features.home.projects.ui.generateDescription.GenerateDescriptionViewModel
 import stepan.gorokhov.paylance.features.home.projects.ui.main.ProjectsMainViewModel
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.ClientProjectsViewModel
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.FreelancerProjectsViewModel
@@ -28,7 +29,8 @@ val projectModule = module {
     viewModel { ProjectsMainViewModel(get(), get()) }
     viewModel { ClientProjectsViewModel(get()) }
     viewModel { FreelancerProjectsViewModel(get()) }
-    viewModel { CreateProjectViewModel(get()) }
+    viewModel { params -> CreateProjectViewModel(params.get(), params.get(), get()) }
     viewModel { params -> ProjectDetailsViewModel(params.get(), get(), get(), get()) }
     viewModel { params -> ProjectResponseViewModel(params.get(), get(), get()) }
+    viewModel { GenerateDescriptionViewModel(get()) }
 }
