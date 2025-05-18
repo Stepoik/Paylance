@@ -188,14 +188,16 @@ private fun GeneratedDescriptionApproval(
 
 @Composable
 private fun ErrorScreen(error: ErrorMessage) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = error.message,
-            style = PaylanceTheme.typography.bodyLarge,
-            color = PaylanceTheme.colors.error
-        )
+    BaseScaffold {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = error.message,
+                style = PaylanceTheme.typography.bodyLarge,
+                color = PaylanceTheme.colors.error
+            )
+        }
     }
 } 
