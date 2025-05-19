@@ -23,7 +23,7 @@ class ChatWebSocketStore(
 ) {
     fun connect(chatId: String): Flow<ChatMessage> {
         return flow {
-            val url = "ws://${Constants.BASE_DOMAIN}/chats/$chatId/ws"
+            val url = "wss://${Constants.BASE_DOMAIN}/chats/$chatId/ws"
             val session = httpClient.webSocketSession(url)
             for (frame in session.incoming) {
                 when (frame) {
