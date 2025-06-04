@@ -1,14 +1,28 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Paylance
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+**Paylance** — это кроссплатформенное мобильное приложение, разработанное с использованием Kotlin Multiplatform Mobile (KMM). Проект ориентирован на платформы Android и iOS, с использованием Jetpack Compose и SwiftUI для соответствующих интерфейсов.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## 📦 Структура проекта
 
+Проект организован следующим образом:
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+- `composeApp/` — общий код для Android и iOS, включая бизнес-логику и UI-компоненты на Compose Multiplatform.
+- `iosApp/` — специфичный для iOS код и настройки.
+- `core/` — модуль с общей бизнес-логикой и моделями данных.
+- `core-ui/` — общая UI логика с запросами permissions и подобным.
+- `uikit/` — общие UI-компоненты и темы.
+- `buildSrc/` — скрипты сборки и зависимости Gradle.
+
+## 🚀 Быстрый старт
+
+### 📱 Android
+
+1. Откройте проект в Android Studio.
+2. Соберите и запустите `composeApp` на эмуляторе или физическом устройстве Android.
+
+### 🍏 iOS
+
+1. Откройте `iosApp` в Xcode.
+2. Соберите и запустите приложение на симуляторе или физическом устройстве iOS.
+
+> Убедитесь, что у вас установлены необходимые инструменты для разработки под iOS, включая Xcode и соответствующие SDK.
