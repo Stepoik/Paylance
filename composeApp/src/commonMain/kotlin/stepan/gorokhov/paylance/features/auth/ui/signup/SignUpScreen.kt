@@ -74,7 +74,11 @@ fun SignUpScreen(state: SignUpState, presenter: SignUpPresenter) {
                 color = PaylanceTheme.colors.onBackground,
                 textAlign = TextAlign.Center
             )
-            SignUpForm(state = state, presenter = presenter, modifier = Modifier.padding(top = 40.dp))
+            SignUpForm(
+                state = state,
+                presenter = presenter,
+                modifier = Modifier.padding(top = 40.dp)
+            )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(1.dp),
                 modifier = Modifier.padding(top = 40.dp)
@@ -138,5 +142,13 @@ private fun SignUpForm(
             onClick = { presenter.onSignUpClicked() },
             modifier = Modifier.fillMaxWidth()
         )
+
+        if (state.error != null) {
+            Text(
+                stringResource(state.error.text),
+                color = PaylanceTheme.colors.error,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
     }
 }

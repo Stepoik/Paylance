@@ -108,5 +108,13 @@ private fun SignInForm(
             onClick = { presenter.onSignInClicked() },
             modifier = Modifier.fillMaxWidth()
         )
+
+        if (state.error != null) {
+            Text(
+                stringResource(state.error.text),
+                color = PaylanceTheme.colors.error,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
     }
 }

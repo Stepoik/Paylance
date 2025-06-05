@@ -23,7 +23,7 @@ fun BaseScaffold(
         floatingActionButtonPosition = FabPosition.End
     ) {
         Column(
-            Modifier.background(PaylanceTheme.colors.background).systemBarsPadding().padding(it)
+            Modifier.background(PaylanceTheme.colors.background).padding(it)
         ) {
             content()
         }
