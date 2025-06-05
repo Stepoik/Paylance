@@ -2,6 +2,7 @@ package stepan.gorokhov.paylance.features.home.projects.ui.createProject
 
 import kotlinx.datetime.LocalDateTime
 import stepan.gorokhov.paylance.core.time.now
+import stepan.gorokhov.paylance.coreui.models.ErrorMessage
 import stepan.gorokhov.paylance.features.home.projects.domain.models.NewProject
 
 data class CreateProjectState(
@@ -11,6 +12,7 @@ data class CreateProjectState(
     val skills: List<String> = listOf(),
     val deadline: LocalDateTime = LocalDateTime.now(),
     val isCreating: Boolean = false,
+    val error: ErrorMessage? = null,
 )
 
 sealed interface CreateProjectEffect {

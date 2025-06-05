@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import org.jetbrains.compose.resources.getString
+import paylance.composeapp.generated.resources.Res
+import stepan.gorokhov.paylance.coreui.models.ErrorMessage
 import stepan.gorokhov.paylance.features.home.projects.domain.ProjectsRepository
 
 class CreateProjectViewModel(
@@ -26,31 +29,31 @@ class CreateProjectViewModel(
     val effect: SharedFlow<CreateProjectEffect> = _effect.asSharedFlow()
 
     override fun setTitle(title: String) {
-        _state.update { it.copy(title = title) }
+        _state.update { it.copy(title = title, error = null) }
     }
 
     override fun setDescription(description: String) {
-        _state.update { it.copy(description = description) }
+        _state.update { it.copy(description = description, error = null) }
     }
 
     override fun setBudget(budget: String) {
-        _state.update { it.copy(budget = budget) }
+        _state.update { it.copy(budget = budget, error = null) }
     }
 
     override fun setDeadline(date: LocalDateTime) {
-        _state.update { it.copy(deadline = date) }
+        _state.update { it.copy(deadline = date, error = null) }
     }
 
     override fun addSkill(skill: String) {
         val currentSkills = _state.value.skills
         if (skill !in currentSkills) {
-            _state.update { it.copy(skills = currentSkills + skill) }
+            _state.update { it.copy(skills = currentSkills + skill, error = null) }
         }
     }
 
     override fun removeSkill(skill: String) {
         val currentSkills = _state.value.skills
-        _state.update { it.copy(skills = currentSkills - skill) }
+        _state.update { it.copy(skills = currentSkills - skill, error = null) }
     }
 
     override fun onClickGenerateProject() {
@@ -62,6 +65,7 @@ class CreateProjectViewModel(
         if (state.isCreating) return
 
         if (state.title.isBlank() || state.description.isBlank() || state.budget.isBlank()) {
+            _state.update { it.copy(error = ErrorMessage("Заполните пустые поля")) }
             return
         }
 
@@ -70,7 +74,7 @@ class CreateProjectViewModel(
             projectRepository.createProject(state.toNewProject()).onSuccess { project ->
                 _effect.emit(CreateProjectEffect.NavigateProject(project.id))
             }.onFailure { error ->
-                // TODO: Показать ошибку
+                _state.update { it.copy(error = ErrorMessage("Неизвестная ошибка при создании")) }
             }
             _state.update { it.copy(isCreating = false) }
         }

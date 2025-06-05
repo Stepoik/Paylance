@@ -81,6 +81,7 @@ fun ClientProjectScreen(presenter: MyProjectsPresenter, state: MyProjectsState.P
                 }
             }
         },
+        usePadding = false
     ) {
         Column {
             if (state.projects.isEmpty()) {

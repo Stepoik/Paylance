@@ -255,6 +255,13 @@ fun LazyListScope.createButton(presenter: CreateProjectPresenter, state: CreateP
                     enabled = !state.isCreating
                 )
             }
+            if (state.error != null) {
+                Text(
+                    state.error.message,
+                    color = PaylanceTheme.colors.error,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
         }
     }
 }
