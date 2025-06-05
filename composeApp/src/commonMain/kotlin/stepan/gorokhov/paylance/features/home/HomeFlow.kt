@@ -1,5 +1,6 @@
 package stepan.gorokhov.paylance.features.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -79,7 +80,7 @@ fun NavGraphBuilder.home(parentNavController: NavController) {
             NavHost(
                 navController,
                 startDestination = HomeRoute.Projects,
-                modifier = Modifier.padding(it)
+                modifier = Modifier.padding(bottom = it.calculateBottomPadding())
             ) {
                 profile(navController)
                 projects(navController)
