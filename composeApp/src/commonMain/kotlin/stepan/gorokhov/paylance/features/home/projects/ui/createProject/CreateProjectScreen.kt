@@ -1,5 +1,6 @@
 package stepan.gorokhov.paylance.features.home.projects.ui.createProject
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -16,11 +17,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import gorokhov.stepan.paylance.uikit.PaylanceTheme
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import paylance.composeapp.generated.resources.Res
 import paylance.composeapp.generated.resources.*
+import stepan.gorokhov.paylance.core.time.formatDateHoursMinutes
+import stepan.gorokhov.paylance.core.time.now
 import stepan.gorokhov.paylance.features.home.projects.ui.myProjects.MyProjectsRoute
 import stepan.gorokhov.paylance.uikit.components.BaseButton
 import stepan.gorokhov.paylance.uikit.components.BaseScaffold
@@ -67,9 +75,11 @@ fun CreateProjectScreen(presenter: CreateProjectPresenter, state: CreateProjectS
             }
             titleTextField(presenter = presenter, state = state)
             descriptionTextField(presenter = presenter, state = state)
+            dateSelection(presenter = presenter, state)
             budgetTextField(presenter = presenter, state = state)
             skillsSection(presenter = presenter, state = state)
             createButton(presenter = presenter, state = state)
+            spacer(0.dp)
         }
     }
 }
@@ -175,6 +185,51 @@ fun LazyListScope.skillsSection(presenter: CreateProjectPresenter, state: Create
                     imageVector = Icons.Default.Add,
                     contentDescription = "Добавить навык",
                     tint = PaylanceTheme.colors.primary
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun LazyListScope.dateSelection(presenter: CreateProjectPresenter, state: CreateProjectState) {
+    item {
+        var showDatePicker by remember {
+            mutableStateOf(false)
+        }
+        BaseTextField(
+            value = remember(state.deadline) { state.deadline.formatDateHoursMinutes() },
+            placeholder = "Новый навык",
+            onValueChanged = {},
+            enabled = false,
+            modifier = Modifier.fillMaxWidth().clickable { showDatePicker = true }
+        )
+        if (showDatePicker) {
+            val currentDate = remember {
+                LocalDateTime.now().toInstant(TimeZone.UTC).toEpochMilliseconds()
+            }
+            val datepickerState = rememberDatePickerState(initialSelectedDateMillis = currentDate)
+            DatePickerDialog(
+                colors = DatePickerDefaults.colors(containerColor = PaylanceTheme.colors.surface),
+                onDismissRequest = { showDatePicker = false },
+                confirmButton = {
+                    BaseButton("Установить", onClick = {
+                        val selectedDate = datepickerState.selectedDateMillis ?: return@BaseButton
+                        showDatePicker = false
+                        presenter.setDeadline(
+                            Instant.fromEpochMilliseconds(selectedDate).toLocalDateTime(
+                                TimeZone.UTC
+                            )
+                        )
+                    })
+                }) {
+                DatePicker(
+                    state = datepickerState,
+                    colors = DatePickerDefaults.colors(
+                        containerColor = PaylanceTheme.colors.surface,
+                        selectedDayContainerColor = PaylanceTheme.colors.primary,
+                        selectedYearContainerColor = PaylanceTheme.colors.primary
+                    )
                 )
             }
         }

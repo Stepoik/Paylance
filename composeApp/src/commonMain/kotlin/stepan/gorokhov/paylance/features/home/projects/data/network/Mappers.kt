@@ -50,7 +50,7 @@ fun NewProject.toCreateRequest(): CreateProjectRequest {
         title = title,
         description = description,
         budget = budget,
-        deadline = LocalDateTime.now(),
+        deadline = deadline,
         skills = skills
     )
 }
